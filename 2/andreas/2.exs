@@ -8,14 +8,14 @@ defmodule Main do
   def update(table, char) do
     Map.update(table, char, 1, &(&1 + 1))
   end
-  
+
   def diff_one([], [], one_diff), do: one_diff
   def diff_one([a|as], [a|bs], one_diff), do: diff_one(as, bs, one_diff)
   def diff_one([_|as], [_|bs], false), do: diff_one(as, bs, true)
   def diff_one(_, _, true), do: false
 
   def diff_one(id1, id2), do: diff_one(id1, id2, false)
-  
+
   def common([], [], acc), do: List.to_string(Enum.reverse(acc))
   def common([a|as], [a|bs], acc), do: common(as, bs, [a|acc])
   def common([_|as], [_|bs], acc), do: common(as, bs, acc)
@@ -25,11 +25,11 @@ defmodule Main do
     {id1, id2} = hd(pairs)
     common(id1, id2, [])
   end
-  
+
   def find_close(ids) do
     for a <- ids, b <- ids, diff_one(a, b), do: {a, b}
   end
-  
+
   def ioformat(x) do
     :io.format "~p~n", [x]
   end

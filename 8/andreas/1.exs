@@ -31,7 +31,7 @@ defmodule Main do
     s = struct(State, input: list, acc: 0)
     traverse_node(s).acc
   end
-  
+
   def ioformat(x) do
     :io.format "~p~n", [x]
   end
@@ -43,7 +43,7 @@ defmodule Main do
     ioformat(x)
     x
   end
-  
+
   def main do
     read_license()
     |> sum_metadata

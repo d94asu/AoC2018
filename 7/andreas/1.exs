@@ -8,7 +8,7 @@ defmodule Main do
     parts = String.split(str, [" "], trim: true)
     {Enum.at(parts, 1), Enum.at(parts, 7)}
   end
-    
+
   def ioformat(x) do
     :io.format "~p~n", [x]
   end
@@ -42,7 +42,7 @@ defmodule Main do
   def add_dependency(table, a, b) do
     Map.update(table, b, [a], &([a|&1]))
   end
-  
+
   def analyze_rules([], left, right, deps), do: {left, right, deps}
   def analyze_rules([{a,b}|rest], left, right, deps) do
     analyze_rules(rest, MapSet.put(left, a), MapSet.put(right, b),
@@ -56,7 +56,7 @@ defmodule Main do
     g = Enum.group_by(rules, fn {b, _} -> a == b end)
     {nonil(g[true]), nonil(g[false])}
   end
-  
+
   def traverse(free, rules, dependencies, acc) do
     if MapSet.size(free) == 0 do
       acc |> Enum.reverse |> Enum.join
@@ -67,14 +67,14 @@ defmodule Main do
       traverse(MapSet.union(free1, newfree), r1, d1, [a|acc])
     end
   end
-  
+
   def choose_order(rules) do
     {left, right, dependencies} = analyze_rules(rules, MapSet.new(),
       MapSet.new(), Map.new())
     free = MapSet.difference(left, right)
     traverse(free, rules, dependencies, [])
   end
-  
+
   def main do
     read_rules()
     |> choose_order

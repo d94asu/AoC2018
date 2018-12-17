@@ -29,7 +29,7 @@ defmodule Main do
   def find_repeated_sum(ints) do
     find_repeated_sum(ints, ints, MapSet.put(MapSet.new(), 0), 0)
   end
-  
+
   def main do
     parse()
     |> find_repeated_sum()

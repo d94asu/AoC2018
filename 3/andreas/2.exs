@@ -11,14 +11,14 @@ defmodule Main do
     |> Enum.map(&String.to_integer/1)
     |> List.to_tuple
   end
-  
+
   def update(table, char) do
     Map.update(table, char, 1, &(&1 + 1))
   end
-  
+
   def count_letters([], table), do: table
   def count_letters([c|cs], table), do: count_letters(cs, update(table, c))
-    
+
   def count_letters(str) do
     count_letters(String.codepoints(str), Map.new())
   end
@@ -55,7 +55,7 @@ defmodule Main do
     |> Map.values
     |> Enum.count(fn x -> x > 1 end)
   end
-  
+
   def ioformat(x) do
     :io.format "~p~n", [x]
   end
@@ -64,7 +64,7 @@ defmodule Main do
     ioformat(x)
     x
   end
-  
+
   def main do
     read_lines()
     |> Enum.map(&parse_claim/1)

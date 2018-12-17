@@ -11,14 +11,14 @@ defmodule Main do
     |> Enum.map(&String.to_integer/1)
     |> List.to_tuple
   end
-  
+
   def update(table, char) do
     Map.update(table, char, 1, &(&1 + 1))
   end
-  
+
   def count_letters([], table), do: table
   def count_letters([c|cs], table), do: count_letters(cs, update(table, c))
-    
+
   def count_letters(str) do
     count_letters(String.codepoints(str), Map.new())
   end
@@ -66,7 +66,7 @@ defmodule Main do
   def find_intact_claims(claims, matrix) do
     for c <- claims, intact(c, matrix), do: elem(c, 0)
   end
-  
+
   def ioformat(x) do
     :io.format "~p~n", [x]
   end
@@ -80,7 +80,7 @@ defmodule Main do
     read_lines()
     |> Enum.map(&parse_claim/1)
   end
-   
+
   def main do
     claims = read_claims()
     matrix = count_overlaps(claims)

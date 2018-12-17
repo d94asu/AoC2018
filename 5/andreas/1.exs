@@ -23,7 +23,7 @@ defmodule Main do
       true -> (abs(c1 - c2) == ?a-?A)
     end
   end
-    
+
   def size_reduction([], false, false, acc), do: acc
   def size_reduction([], true, false, acc), do: Enum.reverse(acc)
   def size_reduction([], true, true, acc) do
@@ -42,11 +42,11 @@ defmodule Main do
       size_reduction([c2|cs], reversed, continue, [c1|acc])
     end
   end
-  
+
   def size_reduction(str) do
     size_reduction(String.to_charlist(str), true, false, [])
   end
-   
+
   def main do
     read()
     |> size_reduction

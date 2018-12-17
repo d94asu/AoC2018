@@ -15,7 +15,7 @@ defmodule Main do
     time = get_time(time0)
     case what do
       ["Guard", nr, "begins", "shift"] ->
-	{time, {:begins, String.to_integer(nr)}}
+    {time, {:begins, String.to_integer(nr)}}
       ["wakes", "up"] -> {time, :wakes}
       ["falls", "asleep"] -> {time, :sleeps}
     end
@@ -27,7 +27,7 @@ defmodule Main do
     |> String.split([" ", "-", ":"], trim: true)
     |> parse_record2
   end
-  
+
   def day_record([{{day, _, _}, {:begins, nr}} | rs]) do
     day_record_wake(rs, nr, day, [], [])
   end
@@ -39,11 +39,11 @@ defmodule Main do
   def day_record_wake([r|rs], nr, day, ranges, acc) do
     case r do
       {{day, 0, m}, :sleeps} ->
-	day_record_sleep(rs, nr, day, m, ranges, acc)
+    day_record_sleep(rs, nr, day, m, ranges, acc)
       {{d, h, _}, {:begins, nr1}} ->
-	d1 = assert_new_day(d, h, day)
-	r1 = Enum.reverse(ranges)
-	day_record_wake(rs, nr1, d1, [], [{day, nr, r1} | acc])
+    d1 = assert_new_day(d, h, day)
+    r1 = Enum.reverse(ranges)
+    day_record_wake(rs, nr1, d1, [], [{day, nr, r1} | acc])
     end
   end
 
@@ -54,11 +54,11 @@ defmodule Main do
   def day_record_sleep([r|rs], nr, day, begin, ranges, acc) do
     case r do
       {{day, 0, m}, :wakes} ->
-	day_record_wake(rs, nr, day, [{begin, m - 1}|ranges], acc)
+    day_record_wake(rs, nr, day, [{begin, m - 1}|ranges], acc)
       {{d, h, _}, {:begins, nr1}} ->
-	d1 = assert_new_day(d, h, day)
-	r1 = Enum.reverse([{begin, 59} | ranges])
-	day_record_wake(rs, nr1, d1, [], [{day, nr, r1} | acc])
+    d1 = assert_new_day(d, h, day)
+    r1 = Enum.reverse([{begin, 59} | ranges])
+    day_record_wake(rs, nr1, d1, [], [{day, nr, r1} | acc])
     end
   end
 
@@ -91,16 +91,16 @@ defmodule Main do
     List.foldl(rs, table, fn r, t -> count_per_range(r, nr, t) end)
   end
 
-  
+
   def days_per_slot(rs) do
     List.foldl(rs, Map.new(), &count_per_day/2)
   end
-  
+
   def best_slot_strategy2(rs) do
     {nr, slot} = rs |> days_per_slot |> key_for_max
     nr * slot
   end
-    
+
   def ioformat(x) do
     :io.format "~p~n", [x]
   end
@@ -115,7 +115,7 @@ defmodule Main do
     |> Enum.sort
     |> Enum.map(&parse_record/1)
   end
-   
+
   def main do
     read_records()
     |> day_record

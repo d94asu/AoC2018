@@ -14,7 +14,7 @@ defmodule Main do
     |> Enum.max_by(fn {_, val} -> val end)
     |> elem(0)
   end
-    
+
   def ioformat(x) do
     :io.format "~p~n", [x]
   end
@@ -35,7 +35,7 @@ defmodule Main do
     end
   end
   def lower(c), do: c + ?a - ?A
-    
+
   def size_reduction([], false, false, acc), do: acc
   def size_reduction([], true, false, acc), do: Enum.reverse(acc)
   def size_reduction([], true, true, acc) do
@@ -54,11 +54,11 @@ defmodule Main do
       size_reduction([c2|cs], reversed, continue, [c1|acc])
     end
   end
-  
+
   def size(str, c0) do
     c1 = lower(c0)
     list = String.to_charlist(str)
-    (for c <- list, c != c0, c != c1, do: c) 
+    (for c <- list, c != c0, c != c1, do: c)
     |> size_reduction(true, false, [])
     |> length
   end
@@ -66,7 +66,7 @@ defmodule Main do
   def compare_data(str) do
     for c <- ?A..?Z, do: size(str, c)
   end
-  
+
   def main do
     read()
     |> compare_data

@@ -8,10 +8,10 @@ defmodule Main do
   def update(table, char) do
     Map.update(table, char, 1, &(&1 + 1))
   end
-  
+
   def count_letters([], table), do: table
   def count_letters([c|cs], table), do: count_letters(cs, update(table, c))
-    
+
   def count_letters(str) do
     count_letters(String.codepoints(str), Map.new())
   end
@@ -30,7 +30,7 @@ defmodule Main do
   def checksum(strings) do
     checksum(strings, 0, 0)
   end
-  
+
   def ioformat(x) do
     :io.format "~p~n", [x]
   end

@@ -15,7 +15,7 @@ defmodule Main do
     parts = String.split(str, [" "], trim: true)
     {Enum.at(parts, 1), Enum.at(parts, 7)}
   end
-    
+
   def ioformat(x) do
     :io.format "~p~n", [x]
   end
@@ -49,7 +49,7 @@ defmodule Main do
   def add_dependency(table, a, b) do
     Map.update(table, b, [a], &([a|&1]))
   end
-  
+
   def analyze_rules([], left, right, deps), do: {left, right, deps}
   def analyze_rules([{a,b}|rest], left, right, deps) do
     analyze_rules(rest, MapSet.put(left, a), MapSet.put(right, b),
@@ -70,14 +70,14 @@ defmodule Main do
     struct(g, time: t, free: MapSet.union(free1, newfree), rules: r1,
       dependencies: d1)
   end
-  
+
   def free_worker({time, index}, workers) do
     worker = Enum.at(workers, index)
     work = worker.work
     worker1 = struct(worker, idle: true)
     {work, List.replace_at(workers, index, worker1), time}
   end
-  
+
   def wait_till_done(workers) do
     (for w <- workers, w.idle == false, do: {w.done, w.id})
     |> Enum.min_by(fn {d, _} -> d end)
@@ -98,11 +98,11 @@ defmodule Main do
     [x] = String.to_charlist(a)
     61 + x - ?A
   end
-  
+
   def start_work(worker, a, time) do
     struct(worker, done: time + work_time(a), idle: false, work: a)
   end
-  
+
   def schedule(0, free, workers, _, acc) do
     {free, Enum.reverse(acc) ++ workers}
   end
@@ -124,7 +124,7 @@ defmodule Main do
   def work_is_done(g, workers) do
     (MapSet.size(g.free) == 0) and (count_non_idle(workers) == 0)
   end
-  
+
   def traverse(g, workers, acc) do
     if work_is_done(g, workers) do
       #      acc |> Enum.reverse |> Enum.join
@@ -136,7 +136,7 @@ defmodule Main do
       traverse(newg, w2, [a|acc])
     end
   end
-  
+
   def choose_order(rules) do
     {left, right, dependencies} = analyze_rules(rules, MapSet.new(),
       MapSet.new(), Map.new())
@@ -145,7 +145,7 @@ defmodule Main do
     workers = (for i <- 0..4, do: struct(Worker, id: i))
     traverse(g, workers, [])
   end
-  
+
   def main do
     read_rules()
     |> choose_order

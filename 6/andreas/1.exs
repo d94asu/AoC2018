@@ -3,7 +3,7 @@ defmodule Main do
     defstruct input: [], minx: 0, miny: 0, maxx: 0, maxy: 0, data: Map.new,
       left: 0
   end
-  
+
   def read_lines() do
     IO.read(:all)
     |> String.split("\n", trim: true)
@@ -15,7 +15,7 @@ defmodule Main do
     |> Enum.map(&String.to_integer/1)
     |> List.to_tuple
   end
-  
+
   def create_matrix([], _, m), do: m
   def create_matrix([{x,y}|ps], i, m = %Matrix{}) do
     newm = m
@@ -24,7 +24,7 @@ defmodule Main do
     |> struct(data: Map.put(m.data, {x,y}, {i, 0}))
     create_matrix(ps, i + 1, newm)
   end
-  
+
   def create_matrix(input) do
     [{x,y}|ps] = input
     d = Map.put(Map.new(), {x,y}, {1, 0})
@@ -44,14 +44,14 @@ defmodule Main do
   def nearest([d|ds]) do
     nearest(ds, d)
   end
-  
+
   def distance({x1, y1}, {x2, y2}), do: abs(x1 - x2) + abs(y1 - y2)
-  
+
   def find_nearest(points, point) do
     (for {p, i} <- Enum.with_index(points), do: {i + 1, distance(p, point)})
     |> nearest
   end
-  
+
   def fill_square(c, m) do
     if Map.has_key?(m.data, c) do
       m
@@ -59,7 +59,7 @@ defmodule Main do
       struct(m, data: Map.put(m.data, c, find_nearest(m.input, c)))
     end
   end
-  
+
   def fill_matrix(m) do
     coords = (for x <- m.minx..m.maxx, y <- m.miny..m.maxy, do: {x, y})
     List.foldl(coords, m, &fill_square/2)
@@ -94,7 +94,7 @@ defmodule Main do
       {j, dist2} -> un3(coord, new_val, {j, dist2}, m)
     end
   end
-  
+
   def un3(_, {i, _}, {i, _}, m), do: m
   def un3(coord, {i, dist1}, {_, dist2}, m) do
     cond do
@@ -103,15 +103,15 @@ defmodule Main do
       true -> struct(m, data: Map.put(m.data, coord, {i, dist1}))
     end
   end
-  
+
   def update_neighbors(distance, {x, y}, matrix) do
     case Map.get(matrix.data, {x, y}) do
       {i, ^distance} ->
-  	neighbors = [{x - 1, y}, {x, y + 1}, {x + 1, y}, {x, y - 1}]
-  	List.foldl(neighbors, matrix, fn c, m ->
-  	  un1(c, {i, distance + 1}, m) end)
+      neighbors = [{x - 1, y}, {x, y + 1}, {x + 1, y}, {x, y - 1}]
+      List.foldl(neighbors, matrix, fn c, m ->
+        un1(c, {i, distance + 1}, m) end)
       _ ->
-  	matrix
+      matrix
     end
   end
 
@@ -120,12 +120,12 @@ defmodule Main do
   def char({0, _}), do: ?.
   def char({i, 0}), do: i + ?A -1
   def char({i, _}), do: i + ?a -1
-  
+
   def print_line(y, minx, maxx, m) do
     chars = (for x <- minx..maxx, do: char(Map.get(m, {x, y})))
     :io.format "~s~n", [chars]
   end
-  
+
   def print_matrix(m) do
     for y <- m.miny..m.maxy, do: print_line(y, m.minx, m.maxx, m.data)
     :ok
@@ -137,7 +137,7 @@ defmodule Main do
       {i, _} -> MapSet.put(set, i)
     end
   end
-  
+
   def infinit_areas(m) do
     top = (for x <- m.minx..m.maxx, do: {x, m.miny})
     bottom = (for x <- m.minx..m.maxx, do: {x, m.maxy})
@@ -155,14 +155,14 @@ defmodule Main do
       true -> Map.update(areas, i, 1, &(&1 + 1))
     end
   end
-  
+
   def non_infinit_areas(m, infinit) do
     ioformat( {m.minx,m.maxx, m.miny,m.maxy})
     areas = Map.new()
     coords = (for x <- m.minx..m.maxx, y <- m.miny..m.maxy, do: {x, y})
     List.foldl(coords, areas, fn c, a -> inc_area(c, infinit, m.data, a) end)
   end
-  
+
   def largest_area(m) do
     infinit = infinit_areas(m)
     non_infinit_areas(m, infinit) |> Map.values |> Enum.max
@@ -176,7 +176,7 @@ defmodule Main do
     ioformat(x)
     x
   end
-  
+
   def main do
     read_lines()
     |> Enum.map(&parse_coord/1)

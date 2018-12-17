@@ -28,10 +28,10 @@ defmodule Main do
       [] -> Enum.sum(metadata)
       _ ->
       (for i <- metadata, do: Enum.at(children, i - 1, 0))
-	|> Enum.sum
+    |> Enum.sum
     end
   end
-  
+
   def calculate_node(state) do
     {md, [:metadata|acc1]} =
       Enum.split_while(state.acc, fn x -> x != :metadata end)
@@ -40,7 +40,7 @@ defmodule Main do
     val = calculate_node(Enum.reverse(c), md)
     struct(state, acc: [val| acc2])
   end
-			   
+
   def traverse_node(state) do
     [children, metadata | rest] = state.input
     struct(state, input: rest)
@@ -61,7 +61,7 @@ defmodule Main do
     [x] = traverse_node(s).acc
     x
   end
-  
+
   def ioformat(x) do
     :io.format "~p~n", [x]
   end
@@ -73,7 +73,7 @@ defmodule Main do
     ioformat(x)
     x
   end
-  
+
   def main do
     read_license()
     |> value
