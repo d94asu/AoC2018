@@ -48,21 +48,13 @@ defmodule Main do
   end
 
   def add(score, s) do
-#    IO.inspect score
     {track, mem} = case s.track_goal do
           [] -> {[], s.mem}
           [^score|rest] -> {rest, s.mem}
           _ -> {s.goal_seq, s.nr + 1}
            end
-#    IO.inspect {track, mem}
     map = Map.put(s.recipes, s.nr, score)
     struct(s, recipes: map, nr: s.nr + 1, track_goal: track, mem: mem)
-  end
-
-  def get_sequence(_, i, i, acc), do: acc
-  def get_sequence(rs, i, stop, acc) do
-    score = Map.get(rs, i)
-    get_sequence(rs, i - 1, stop, [score|acc])
   end
 
   def main() do
@@ -88,7 +80,6 @@ defmodule Main do
     |> update_elf_values
     |> add_recipes
     |> update_elf_index
-#    |> IO.inspect
     |> loop
     end
   end

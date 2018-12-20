@@ -41,14 +41,6 @@ defmodule Main do
     |> sum_grid
     |> key_for_max
     |> print_coord
-    IO.write IO.ANSI.green
-    IO.write [?2]
-    IO.write IO.ANSI.red
-    IO.write [?3]
-    IO.puts ''
-    IO.write [?3]
-    IO.write IO.ANSI.white
-    IO.puts 'hepp'
   end
 end
 

@@ -113,11 +113,25 @@ defmodule Main do
     calculate(row, index, 0)
   end
 
-  def main do
-    read_pots()
-    |> run_generations(20)
+
+  def calc(init_state, generations) do
+    init_state
+    |> run_generations(generations)
     |> calculate
-    |> IO.puts
+  end
+
+  ## assuming liniarity (trying out it looks that way when generations are high)
+  def main do
+    init_state = read_pots()
+    x1 = 5000
+    x2 = 50000
+    x3 = 50000000000
+    y1 = calc(init_state, x1)
+    y2 = calc(init_state, x2)
+    k = (y2 - y1) / (x2 - x1)
+    m = y1 - k * x1
+    y3 = k * x3 - m
+    IO.puts Kernel.trunc(y3)
   end
 end
 
